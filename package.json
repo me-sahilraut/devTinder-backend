@@ -1,0 +1,15 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start":"node src/app.js"
+  },
+  "author": "Sahil Raut",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
