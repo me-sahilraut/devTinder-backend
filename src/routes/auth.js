@@ -14,7 +14,7 @@ authRouter.post("/signup", async (req, res) => {
 
     // Encrypt the password
     const passwordHash = await bcrypt.hash(password, 10);
-    console.log(passwordHash);
+    console.log(emailId);
 
     //   Creating a new instance of the User model
     const user = new User({
@@ -24,9 +24,12 @@ authRouter.post("/signup", async (req, res) => {
       password: passwordHash,
     });
 
+    // Save model data with timestamps
     const savedUser = await user.save();
+  
+    // Genrate JWT token with model details
     const token = await savedUser.getJWT();
-
+    //  Saved Token in to cookies with expire time
     res.cookie("token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
     });
@@ -45,8 +48,9 @@ authRouter.post("/login", async (req, res) => {
     if (!user) {
       throw new Error("Invalid credentials");
     }
+    console.log("user data",user)
     const isPasswordValid = await user.validatePassword(password);
-
+    console.log("isPasswordValid ",isPasswordValid)
     if (isPasswordValid) {
       const token = await user.getJWT();
 
@@ -62,11 +66,11 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
-// authRouter.post("/logout", async (req, res) => {
-//   res.cookie("token", null, {
-//     expires: new Date(Date.now()),
-//   });
-//   res.send("Logout Successful!!");
-// });
+authRouter.post("/logout", async (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+  });
+  res.send("Logout Successful!!");
+});
 
 module.exports = authRouter;

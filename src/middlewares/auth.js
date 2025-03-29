@@ -4,6 +4,7 @@ const User = require("../models/user")
 
 const userAuth = async (req, res, next) => {
     try {
+        console.log("req => " +JSON.stringify( req.cookies))
         const cookies = req.cookies;
 
         const { token } = cookies
@@ -18,7 +19,7 @@ const userAuth = async (req, res, next) => {
         if (!getUser) {
             throw new Error("User not found");
         }
-req.user = getUser
+        req.user = getUser
         next();
     } catch (err) {
         res.status(400).send("ERROR: " + err.message);
